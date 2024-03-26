@@ -1,5 +1,3 @@
-
-
 /*
 I found the number of each user type and their percentage of the whole.
 */

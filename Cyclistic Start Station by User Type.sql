@@ -1,4 +1,3 @@
-
 /*
 In order to see which 10 starting stations were most popluar I ran a query to find the most common NOT NULL "casual" user station...
 */
