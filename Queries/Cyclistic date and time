@@ -1,0 +1,85 @@
+/*
+Monthly rides for casual users
+*/
+
+WITH cte as (
+
+SELECT ride_id, user_type, DATENAME(MONTH, started_at) as 'month'
+FROM TripData_2023
+Where user_type = 'casual'
+GROUP BY user_type, started_at, ride_id
+)
+
+SELECT user_type, month, COUNT(ride_id) as rides_per_month
+FROM cte
+GROUP BY user_type, [month]
+ORDER BY [rides_per_month] desc
+
+/*
+Monthly rides for members
+*/
+
+WITH cte as (
+
+SELECT ride_id, user_type, DATENAME(MONTH, started_at) as 'month'
+FROM TripData_2023
+Where user_type = 'member'
+GROUP BY user_type, started_at, ride_id
+)
+
+SELECT user_type, month, COUNT(ride_id) as rides_per_month
+FROM cte
+GROUP BY user_type, [month]
+ORDER BY [rides_per_month] desc
+
+/*
+Weekday averages for casual users
+*/
+
+WITH
+CTE AS (
+
+    SELECT ride_id, user_type, CAST(started_at as date) as 'date', DATENAME(dw,started_at) AS 'day'
+    FROM TripData_2023
+    WHERE user_type = 'casual'
+    GROUP BY started_at, ride_id, user_type
+),
+
+CTE2 AS (
+
+    Select user_type, [date], day, COUNT([ride_id]) as 'ride_count'
+    FROM CTE
+    GROUP BY [day], [date], user_type
+    --ORDER BY [date]
+)
+
+    SELECT user_type, day, avg(ride_count) as 'avg_rides_day'
+    FROM CTE2
+    GROUP BY [day], user_type
+    ORDER BY [avg_rides_day] DESC
+
+/*
+Weekday averages for members users
+*/
+
+WITH
+CTE AS (
+
+    SELECT ride_id, user_type, CAST(started_at as date) as 'date', DATENAME(dw,started_at) AS 'day'
+    FROM TripData_2023
+    WHERE user_type = 'member'
+    GROUP BY started_at, ride_id, user_type
+),
+
+CTE2 AS (
+
+    Select user_type, [date], day, COUNT([ride_id]) as 'ride_count'
+    FROM CTE
+    GROUP BY [day], [date], user_type
+    --ORDER BY [date]
+)
+
+    SELECT user_type, day, avg(ride_count) as 'avg_rides_day'
+    FROM CTE2
+    GROUP BY [day], user_type
+    ORDER BY [avg_rides_day] DESC
