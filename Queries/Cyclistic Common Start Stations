@@ -1,0 +1,15 @@
+Select TOP 10 user_type, start_station_name, COUNT(start_station_name) AS start_station_count--, end_station_name
+FROM TripData_2023
+WHERE user_type = 'casual' AND
+    start_station_name IS NOT NULL AND
+    end_station_name IS NOT NULL
+GROUP BY user_type, start_station_name
+ORDER BY start_station_count DESC
+
+Select TOP 10 user_type, start_station_name, COUNT(start_station_name) AS start_station_count--, end_station_name
+FROM TripData_2023
+WHERE user_type = 'member' AND
+    start_station_name IS NOT NULL AND
+    end_station_name IS NOT NULL
+GROUP BY user_type, start_station_name
+ORDER BY start_station_count DESC

@@ -1,0 +1,37 @@
+/* User count by bike type */
+
+    SELECT user_type, rideable_type, COUNT(user_type) AS 'ride_count'
+    FROM TripData_2023
+    GROUP BY rideable_type, user_type
+    ORDER BY user_type, ride_count DESC
+
+
+
+
+/* Casual rider monthly bike type */
+WITH CTE AS (
+    SELECT ride_id, user_type, DATENAME(month, started_at) as 'month', rideable_type, count(rideable_type) as 'rides' 
+    FROM TripData_2023
+    WHERE user_type = 'casual'
+    GROUP BY started_at, user_type, rideable_type, ride_id
+)
+
+SELECT user_type, month, rideable_type, count(ride_id) as 'ride_count'
+FROM CTE
+GROUP BY rideable_type, month, rides, user_type
+ORDER BY ride_count DESC, rideable_type 
+
+
+
+/* Member monthly bike type */
+WITH CTE AS (
+    SELECT ride_id, user_type, DATENAME(month, started_at) as 'month', rideable_type, count(rideable_type) as 'rides' 
+    FROM TripData_2023
+    WHERE user_type = 'member'
+    GROUP BY started_at, user_type, rideable_type, ride_id
+)
+
+SELECT user_type, month, rideable_type, count(ride_id) as 'ride_count'
+FROM CTE
+GROUP BY rideable_type, month, rides, user_type
+ORDER BY ride_count DESC, rideable_type 

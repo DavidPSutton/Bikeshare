@@ -55,7 +55,7 @@ ORDER BY started_at
 Now I check to make sure all of the "ride_id" values are distinct
 */
 
-SELECT ride_id, COUNT(ride_id)
+SELECT ride_id, COUNT(ride_id) as 'repeat_id_count'
 FROM TripData_2023
 GROUP BY ride_id
 HAVING COUNT(ride_id) >1
